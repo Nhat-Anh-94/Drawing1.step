@@ -152,7 +152,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         ////////////////////
         // CADMesh :: STEP //
         ////////////////////
-        auto step_mesh = CADMesh::TessellatedMesh::FromSTEP("./Drawing1.step");  // 
+        auto step_mesh = CADMesh::TessellatedMesh::FromSTL("./Drawing1.stl");  // 
         step_mesh->SetScale(400);  // 
         step_mesh->SetOffset(G4ThreeVector(0, 0, 0));  // 
 

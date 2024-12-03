@@ -152,9 +152,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         ////////////////////
         // CADMesh :: STEP //
         ////////////////////
-        auto step_mesh = CADMesh::TessellatedMesh::FromSTEP("./model.step");  // Thêm ph?n này ?? ??c t?p STEP
-        step_mesh->SetScale(400);  // Có th? ?i?u ch?nh t? l? n?u c?n
-        step_mesh->SetOffset(G4ThreeVector(0, 0, 0));  // D?ch chuy?n n?u c?n
+        auto step_mesh = CADMesh::TessellatedMesh::FromSTEP("./Drawing1.step");  // 
+        step_mesh->SetScale(400);  // 
+        step_mesh->SetOffset(G4ThreeVector(0, 0, 0));  // 
 
         auto step_logical = new G4LogicalVolume(step_mesh->GetSolid(), water, "step_logical", 0, 0, 0);
         new G4PVPlacement(0, G4ThreeVector(), step_logical, "step_physical", world_logical, false, 0);

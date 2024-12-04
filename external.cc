@@ -65,7 +65,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         G4Material * water = nist_manager->FindOrBuildMaterial("G4_WATER");
 
         // World //
-        auto world_solid = new G4Box("world_solid", 1*m, 1*m, 1*m);
+        auto world_solid = new G4Box("world_solid", 10*cm, 10*cm, 10*cm);
 
         auto world_logical = new G4LogicalVolume( world_solid
                                                 , air

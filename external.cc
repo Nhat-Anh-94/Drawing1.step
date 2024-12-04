@@ -174,12 +174,12 @@ int main(int argc, char** argv)
     session->ApplyCommand("/gps/pos/shape Para");
     session->ApplyCommand("/gps/pos/confine world_physical");
     session->ApplyCommand("/gps/ang/type iso");
-    session->ApplyCommand("/gps/pos/halfx 0.01 m");
-    session->ApplyCommand("/gps/pos/halfy 0.01 m");
-    session->ApplyCommand("/gps/pos/halfz 0.01 m");
+    session->ApplyCommand("/gps/pos/halfx 0.1 m");
+    session->ApplyCommand("/gps/pos/halfy 0.1 m");
+    session->ApplyCommand("/gps/pos/halfz 0.1 m");
 
     // Visualisation //
-    session->ApplyCommand("/vis/open OGLIQt 100x100-500-50");
+    session->ApplyCommand("/vis/open OGLIQt 1000x1000-500-50");
     session->ApplyCommand("/vis/viewer/set/viewpointThetaPhi 60 30");
     session->ApplyCommand("/vis/drawVolume");
     session->ApplyCommand("/vis/scene/add/trajectories");

@@ -92,6 +92,12 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         // including "CADMesh.hh".
         auto cone_mesh = CADMesh::TessellatedMesh::From("./Drawing1.dae", CADMesh::File::ASSIMP());
 
+        if (!cone_mesh) {
+            G4cerr << "Error: Failed to load the DAE file!" << G4endl;
+        }
+        else {
+            G4cout << "DAE file loaded successfully!" << G4endl;
+        }
         // We can also set ASSIMP to be be default reader, and CADMesh will use
         // it to try and open any file we throw at it. For this to work we also
         // need to set "#define CADMESH_DEFAULT_READER ASSIMPReader" before we
@@ -168,12 +174,12 @@ int main(int argc, char** argv)
     session->ApplyCommand("/gps/pos/shape Para");
     session->ApplyCommand("/gps/pos/confine world_physical");
     session->ApplyCommand("/gps/ang/type iso");
-    session->ApplyCommand("/gps/pos/halfx 1 m");
-    session->ApplyCommand("/gps/pos/halfy 1 m");
-    session->ApplyCommand("/gps/pos/halfz 1 m");
+    session->ApplyCommand("/gps/pos/halfx 0.01 m");
+    session->ApplyCommand("/gps/pos/halfy 0.01 m");
+    session->ApplyCommand("/gps/pos/halfz 0.01 m");
 
     // Visualisation //
-    session->ApplyCommand("/vis/open OGL 500x500-500-50");
+    session->ApplyCommand("/vis/open OGLIQt 100x100-500-50");
     session->ApplyCommand("/vis/viewer/set/viewpointThetaPhi 60 30");
     session->ApplyCommand("/vis/drawVolume");
     session->ApplyCommand("/vis/scene/add/trajectories");

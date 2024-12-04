@@ -179,7 +179,7 @@ int main(int argc, char** argv)
     session->ApplyCommand("/gps/pos/halfz 0.1 m");
 
     // Visualisation //
-    session->ApplyCommand("/vis/open RayTracer 1000x1000-500-50");
+    session->ApplyCommand("/vis/open OGLIQt 1000x1000-500-50");
     session->ApplyCommand("/vis/viewer/set/viewpointThetaPhi 60 30");
     session->ApplyCommand("/vis/drawVolume");
     session->ApplyCommand("/vis/scene/add/trajectories");

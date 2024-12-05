@@ -1,4 +1,4 @@
-solid vgc
+solid vcg
 facet normal -0.027260 -0.207056 -0.207055
 outer loop
 vertex 3.914111 375.316101 43.045483
@@ -47935,4 +47935,4 @@ vertex 37.600002 374.816101 37.600002
 vertex 37.600002 379.816101 37.600002
 endloop
 endfacet
-endsolid vgc
+endsolid vcg

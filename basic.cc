@@ -108,46 +108,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
                          , false, 0
         );
  
-        ////////////////////
-        // CADMesh :: STL //
-        ////////////////////
 
-        auto bunny_mesh = CADMesh::TessellatedMesh::FromSTL("./bunny.stl");
-
-        auto bunny_logical = new G4LogicalVolume( bunny_mesh->GetSolid() 
-                                                 , water
-                                                 , "logical"
-                                                 , 0, 0, 0
-        );
-
-        new G4PVPlacement( 0
-                         , G4ThreeVector()
-                         , bunny_logical
-                         , "physical"
-                         , world_logical
-                         , false, 0
-        );
-
-        ////////////////////
-        // CADMesh :: OBJ //
-        ////////////////////
-
-        auto cow_mesh = CADMesh::TessellatedMesh::FromOBJ("./cow.obj");
-        cow_mesh->SetScale(500);
-
-        auto cow_logical = new G4LogicalVolume( cow_mesh->GetSolid() 
-                                              , water
-                                              , "logical"
-                                              , 0, 0, 0
-        );
-
-        new G4PVPlacement( 0
-                         , G4ThreeVector(-500, -500, 1000)
-                         , cow_logical
-                         , "physical"
-                         , world_logical
-                         , false, 0
-        );
  
         ////////////////////
         // CADMesh :: STEP //

@@ -85,8 +85,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         // Optionally set the mesh scale and offset. These values are applied
         // directly to the mesh vertices before generating the solid. The scale
         // is applied before the offset inside CADMesh.
-        sphere_mesh->SetScale(400);
-        sphere_mesh->SetOffset(G4ThreeVector(500, 500, 750));
+        sphere_mesh->SetScale(10);
+        sphere_mesh->SetOffset(G4ThreeVector(500, 500, 500));
 
         // Get the G4VSolid*. Use this like you would any other solid in Geant4.
         auto sphere_solid = sphere_mesh->GetSolid();
@@ -114,11 +114,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         // CADMesh :: STEP //
         ////////////////////
         auto step_mesh = CADMesh::TessellatedMesh::FromSTL("./Drawing2.stl");  // 
-        step_mesh->SetScale(400);  // 
+        step_mesh->SetScale(200);  // 
         step_mesh->SetOffset(G4ThreeVector(0, 0, 0));  // 
+        auto step_rotation = new G4RotationMatrix();
+        step_rotation->rotateY(45 * deg);
 
         auto step_logical = new G4LogicalVolume(step_mesh->GetSolid(), water, "step_logical", 0, 0, 0);
-        new G4PVPlacement(0, G4ThreeVector(), step_logical, "step_physical", world_logical, false, 0);
+        new G4PVPlacement(step_rotation, G4ThreeVector(), step_logical, "step_physical", world_logical, false, 0);
 
         return world_physical;
     };
@@ -179,7 +181,7 @@ int main(int argc, char** argv)
     session->ApplyCommand("/gps/pos/halfz 2 m");
 
     // Visualisation //
-    session->ApplyCommand("/vis/open OGL 500x500-500-50");
+    session->ApplyCommand("/vis/open OGL 1000x1000-500-50");
     session->ApplyCommand("/vis/viewer/set/viewpointThetaPhi 70 30");
     session->ApplyCommand("/vis/viewer/set/style surface");
     session->ApplyCommand("/vis/drawVolume");

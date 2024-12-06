@@ -72,43 +72,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
                                                , "world_physical"
                                                , 0, false, 0
         );
-
-        ////////////////////
-        // CADMesh :: PLY //
-        ////////////////////
-
-        // Read your file. PLY and OBJ can also be loaded  using the built-in
-        // reader (no external software dependencies). Look at the other
-        // examples for using external readers.
-        auto sphere_mesh = CADMesh::TessellatedMesh::FromPLY("./sphere.ply");
-
-        // Optionally set the mesh scale and offset. These values are applied
-        // directly to the mesh vertices before generating the solid. The scale
-        // is applied before the offset inside CADMesh.
-        sphere_mesh->SetScale(10);
-        sphere_mesh->SetOffset(G4ThreeVector(500, 500, 500));
-
-        // Get the G4VSolid*. Use this like you would any other solid in Geant4.
-        auto sphere_solid = sphere_mesh->GetSolid();
-
-        auto sphere_logical = new G4LogicalVolume( sphere_solid
-                                                 , water
-                                                 , "logical"
-                                                 , 0, 0, 0
-        );
-        
-        auto rotation = new G4RotationMatrix();
-        rotation->rotateX(90*deg);
-
-        new G4PVPlacement( rotation
-                         , G4ThreeVector()
-                         , sphere_logical
-                         , "physical"
-                         , world_logical
-                         , false, 0
-        );
- 
-
  
         ////////////////////
         // CADMesh :: STEP //

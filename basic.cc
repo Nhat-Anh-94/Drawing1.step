@@ -20,13 +20,10 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QLabel>
-#include <QMessageBox>
 
 // CADMESH //
 #include "CADMesh.hh"
 
-// DetectorConstruction class (for Geant4 simulation)
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
@@ -57,10 +54,9 @@ public:
         new G4PVPlacement(step_rotation, G4ThreeVector(), step_logical, "step_physical", world_logical, false, 0);
 
         return world_physical;
-    }
+    };
 };
 
-// PrimaryGeneratorAction class (for particle source)
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 private:
@@ -71,52 +67,38 @@ public:
     {
         particle_gun = new G4GeneralParticleSource();
         particle_gun->SetParticleDefinition(G4Gamma::Definition());
-    }
+    };
 
     ~PrimaryGeneratorAction() override
     {
         delete particle_gun;
-    }
+    };
 
     void GeneratePrimaries(G4Event* event) override
     {
         particle_gun->GeneratePrimaryVertex(event);
-    }
+    };
 };
 
-// MainWindow class (Qt GUI for Geant4 simulation)
 class MainWindow : public QWidget
 {
     Q_OBJECT
-
 public:
     MainWindow()
     {
-        // Layout and buttons
+        // Layout and button for starting the simulation
         QVBoxLayout* layout = new QVBoxLayout(this);
-
-        // Start Simulation Button
         QPushButton* startButton = new QPushButton("Start Simulation", this);
         layout->addWidget(startButton);
 
-        // Stop Simulation Button (New feature)
-        QPushButton* stopButton = new QPushButton("Stop Simulation", this);
-        layout->addWidget(stopButton);
-
-        // Message to show the user when the simulation is running
-        statusLabel = new QLabel("Simulation is not running.", this);
-        layout->addWidget(statusLabel);
-
-        // Connect signals and slots
         connect(startButton, &QPushButton::clicked, this, &MainWindow::startSimulation);
-        connect(stopButton, &QPushButton::clicked, this, &MainWindow::stopSimulation);
     }
 
 public slots:
     void startSimulation()
     {
         // Initialize Geant4 RunManager
-        run_manager = new G4RunManager();
+        auto run_manager = new G4RunManager();
 
         // Set up DetectorConstruction
         auto detector_construction = new DetectorConstruction();
@@ -133,38 +115,15 @@ public slots:
         run_manager->Initialize();  // Initialize simulation
 
         // Initialize Visualization Manager
-        vis_manager = new G4VisExecutive();
+        auto vis_manager = new G4VisExecutive();
         vis_manager->Initialize();
-
-        // Update status label
-        statusLabel->setText("Simulation is running...");
 
         // Run the simulation with a number of events (can be adjusted)
         run_manager->BeamOn(1000);  // Run 1000 events
 
-        // Update status label
-        statusLabel->setText("Simulation completed.");
-
         delete vis_manager;
         delete run_manager;
     }
-
-    void stopSimulation()
-    {
-        // Logic to stop the simulation (a simple simulation stop mechanism)
-        if (run_manager) {
-            run_manager->BeamOn(0);  // Stop the simulation after 0 events
-            statusLabel->setText("Simulation stopped.");
-        }
-        else {
-            QMessageBox::warning(this, "Error", "Simulation has not started yet.");
-        }
-    }
-
-private:
-    QLabel* statusLabel;  // Label to show simulation status
-    G4RunManager* run_manager = nullptr;  // Geant4 run manager
-    G4VisExecutive* vis_manager = nullptr;  // Visualization manager
 };
 
 int main(int argc, char** argv)
@@ -174,9 +133,7 @@ int main(int argc, char** argv)
     // Create main window
     MainWindow window;
     window.setWindowTitle("Geant4 Simulation with Qt");
-    window.resize(300, 200);  // Resize window
     window.show();
 
     return app.exec();  // Start Qt application event loop
 }
-

@@ -39,6 +39,7 @@ namespace B1
         new G4PVPlacement(nullptr, G4ThreeVector(), logicEnv, "Envelope", logicWorld, false, 0, checkOverlaps);
 
         G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+        G4ThreeVector pos1 = G4ThreeVector(0, 2 * cm, -7 * cm);
         /*// Shape 1 (Sphere)
         G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
         G4ThreeVector pos1 = G4ThreeVector(0, 2 * cm, -7 * cm);
@@ -57,15 +58,14 @@ namespace B1
         // CADMesh :: STEP //
         ////////////////////
         auto step_mesh = CADMesh::TessellatedMesh::FromSTL("./Drawing2.stl");  // 
-        step_mesh->SetScale(10);  // 
-        step_mesh->SetOffset(G4ThreeVector(0, 2 * cm, -7 * cm));  // 
+        step_mesh->SetScale(5);  // 
+        //step_mesh->SetOffset(G4ThreeVector(0, 2 * cm, -7 * cm));  // 
         auto step_rotation = new G4RotationMatrix();
         step_rotation->rotateY(45 * deg);
 
         auto step_logical = new G4LogicalVolume(step_mesh->GetSolid(), shape1_mat, "step_logical", 0, 0, 0);
-        new G4PVPlacement(step_rotation, G4ThreeVector(), step_logical, "step_physical", world_logical, false, 0);
-        }
-
+        new G4PVPlacement(nullptr, pos1, step_logical, "step_physical", logicEnv, false, 0);
+ 
         // Set Shape2 as scoring volume
         fScoringVolume = logicShape2;
 

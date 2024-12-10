@@ -82,15 +82,18 @@ public:
 
 class MainWindow : public QWidget
 {
-    Q_OBJECT
+    Q_OBJECT  // Make sure Q_OBJECT macro is present
+
 public:
-    MainWindow()
+    MainWindow(QWidget* parent = nullptr)
+        : QWidget(parent)
     {
         // Layout and button for starting the simulation
         QVBoxLayout* layout = new QVBoxLayout(this);
         QPushButton* startButton = new QPushButton("Start Simulation", this);
         layout->addWidget(startButton);
 
+        // Connect button click to slot
         connect(startButton, &QPushButton::clicked, this, &MainWindow::startSimulation);
     }
 

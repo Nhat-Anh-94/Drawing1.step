@@ -38,12 +38,13 @@ namespace B1
         auto logicEnv = new G4LogicalVolume(solidEnv, env_mat, "Envelope");
         new G4PVPlacement(nullptr, G4ThreeVector(), logicEnv, "Envelope", logicWorld, false, 0, checkOverlaps);
 
-        // Shape 1 (Sphere)
+        G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+        /*// Shape 1 (Sphere)
         G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
         G4ThreeVector pos1 = G4ThreeVector(0, 2 * cm, -7 * cm);
         auto solidShape1 = new G4Orb("Shape1", 2 * cm);
         auto logicShape1 = new G4LogicalVolume(solidShape1, shape1_mat, "Shape1");
-        new G4PVPlacement(nullptr, pos1, logicShape1, "Shape1", logicEnv, false, 0, checkOverlaps);
+        new G4PVPlacement(nullptr, pos1, logicShape1, "Shape1", logicEnv, false, 0, checkOverlaps);*/
 
         // Shape 2 (Sphere)
         G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
@@ -52,23 +53,17 @@ namespace B1
         auto logicShape2 = new G4LogicalVolume(solidShape2, shape2_mat, "Shape2");
         new G4PVPlacement(nullptr, pos2, logicShape2, "Shape2", logicEnv, false, 0, checkOverlaps);
 
-        // Load DAE model (Mesh)
-        CADMesh::TessellatedMesh* cone_mesh = CADMesh::TessellatedMesh::From("./Drawing1.dae", CADMesh::File::ASSIMP());
+        ////////////////////
+        // CADMesh :: STEP //
+        ////////////////////
+        auto step_mesh = CADMesh::TessellatedMesh::FromSTL("./Drawing2.stl");  // 
+        step_mesh->SetScale(10);  // 
+        step_mesh->SetOffset(G4ThreeVector(0, 2 * cm, -7 * cm));  // 
+        auto step_rotation = new G4RotationMatrix();
+        step_rotation->rotateY(45 * deg);
 
-        if (!cone_mesh) {
-            G4cerr << "Error: Failed to load the DAE file!" << G4endl;
-        }
-        else {
-            G4cout << "DAE file loaded successfully!" << G4endl;
-
-            // Get the solid from the mesh
-            auto cone_solid = cone_mesh->GetSolid();
-
-            // Create a logical volume for the DAE model
-            auto cone_logical = new G4LogicalVolume(cone_solid, shape2_mat, "ConeLogical");
-
-            // Place the DAE model in the world volume
-            new G4PVPlacement(nullptr, G4ThreeVector(), cone_logical, "ConePhysical", logicWorld, false, 0, checkOverlaps);
+        auto step_logical = new G4LogicalVolume(step_mesh->GetSolid(), shape1_mat, "step_logical", 0, 0, 0);
+        new G4PVPlacement(step_rotation, G4ThreeVector(), step_logical, "step_physical", world_logical, false, 0);
         }
 
         // Set Shape2 as scoring volume
